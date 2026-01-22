@@ -24,6 +24,7 @@ import org.sonukg.di.appModule
 import org.sonukg.ui.screen.FavScreen
 import org.sonukg.ui.screen.HomeScreen
 
+@Suppress("ktlint:standard:function-naming")
 @Composable
 fun App() {
     KoinApplication(application = {
@@ -35,6 +36,7 @@ fun App() {
     }
 }
 
+@Suppress("ktlint:standard:function-naming")
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
@@ -53,27 +55,32 @@ fun MainScreen() {
                         onClick = {
                             selectedItem = index
                             when (index) {
-                                0 -> navController.navigate("home") {
-                                    popUpTo("home") { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
+                                0 -> {
+                                    navController.navigate("home") {
+                                        popUpTo("home") { saveState = true }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
                                 }
-                                1 -> navController.navigate("fav") {
-                                    popUpTo("home") { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
+
+                                1 -> {
+                                    navController.navigate("fav") {
+                                        popUpTo("home") { saveState = true }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
                                 }
                             }
-                        }
+                        },
                     )
                 }
             }
-        }
+        },
     ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = "home",
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
         ) {
             composable("home") { HomeScreen() }
             composable("fav") { FavScreen() }

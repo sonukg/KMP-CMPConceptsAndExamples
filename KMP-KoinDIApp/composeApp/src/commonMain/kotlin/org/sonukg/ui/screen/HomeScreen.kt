@@ -19,11 +19,10 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.sonukg.presentation.home.HomeViewModel
 import org.sonukg.ui.component.PostItem
 
+@Suppress("ktlint:standard:function-naming")
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun HomeScreen(
-    viewModel: HomeViewModel = koinViewModel()
-) {
+fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -32,18 +31,18 @@ fun HomeScreen(
         } else if (state.error != null) {
             Text(
                 text = state.error ?: "Unknown error",
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
             )
         } else {
             LazyColumn(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 items(state.posts, key = { it.id }) { post ->
                     PostItem(
                         post = post,
-                        onFavoriteClick = { viewModel.toggleFavorite(it) }
+                        onFavoriteClick = { viewModel.toggleFavorite(it) },
                     )
                 }
             }

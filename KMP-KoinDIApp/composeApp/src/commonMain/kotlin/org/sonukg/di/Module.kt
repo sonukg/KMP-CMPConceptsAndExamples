@@ -18,38 +18,41 @@ import org.sonukg.domain.repository.PostRepository
 import org.sonukg.domain.usecase.GetFavoritesUseCase
 import org.sonukg.domain.usecase.GetPostsUseCase
 import org.sonukg.domain.usecase.ToggleFavoriteUseCase
-import org.sonukg.presentation.home.HomeViewModel
 import org.sonukg.presentation.fav.FavViewModel
+import org.sonukg.presentation.home.HomeViewModel
 
-val appModule = module {
-    // Network
-    single {
-        HttpClient {
-            install(ContentNegotiation) {
-                json(Json {
-                    prettyPrint = true
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                })
-            }
-            install(Logging) {
-                logger = Logger.SIMPLE
-                level = LogLevel.ALL
+val appModule =
+    module {
+        // Network
+        single {
+            HttpClient {
+                install(ContentNegotiation) {
+                    json(
+                        Json {
+                            prettyPrint = true
+                            isLenient = true
+                            ignoreUnknownKeys = true
+                        },
+                    )
+                }
+                install(Logging) {
+                    logger = Logger.SIMPLE
+                    level = LogLevel.ALL
+                }
             }
         }
+
+        singleOf(::PostService)
+
+        // Data
+        singleOf(::PostRepositoryImpl) bind PostRepository::class
+
+        // Domain
+        singleOf(::GetPostsUseCase)
+        singleOf(::ToggleFavoriteUseCase)
+        singleOf(::GetFavoritesUseCase)
+
+        // Presentation
+        viewModelOf(::HomeViewModel)
+        viewModelOf(::FavViewModel)
     }
-
-    singleOf(::PostService)
-
-    // Data
-    singleOf(::PostRepositoryImpl) bind PostRepository::class
-
-    // Domain
-    singleOf(::GetPostsUseCase)
-    singleOf(::ToggleFavoriteUseCase)
-    singleOf(::GetFavoritesUseCase)
-
-    // Presentation
-    viewModelOf(::HomeViewModel)
-    viewModelOf(::FavViewModel)
-}
